@@ -1,0 +1,119 @@
+name: Autograding Tests
+on: [push, workflow_dispatch, repository_dispatch]
+
+permissions:
+  checks: write
+  actions: read
+  contents: read
+
+jobs:
+  build:
+    name: Autograding
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      # Sub-Task 1 Tests (20 points)
+      - name: Sub-Task 1 - For Loop with Range
+        id: test-loops-for-range
+        uses: education/autograding-test-reporter@v1
+        with:
+          test-name: Sub-Task 1 - For Loop with Range
+          command: 'python3 -m unittest tests.TestDay2Subtasks.test_loops_for_range'
+          points: 5
+
+      - name: Sub-Task 1 - For Loop with List
+        id: test-loops-for-list
+        uses: education/autograding-test-reporter@v1
+        with:
+          test-name: Sub-Task 1 - For Loop with List
+          command: 'python3 -m unittest tests.TestDay2Subtasks.test_loops_for_list'
+          points: 5
+
+      - name: Sub-Task 1 - While Loop Countdown
+        id: test-loops-while-countdown
+        uses: education/autograding-test-reporter@v1
+        with:
+          test-name: Sub-Task 1 - While Loop Countdown
+          command: 'python3 -m unittest tests.TestDay2Subtasks.test_loops_while_countdown'
+          points: 5
+
+      - name: Sub-Task 1 - Summation with Loop
+        id: test-loops-sum
+        uses: education/autograding-test-reporter@v1
+        with:
+          test-name: Sub-Task 1 - Summation with Loop
+          command: 'python3 -m unittest tests.TestDay2Subtasks.test_loops_sum'
+          points: 5
+      
+      # Sub-Task 2 Tests (30 points)
+      - name: Sub-Task 2 - Guess Too Low
+        id: test-guessing-game-too-low
+        uses: education/autograding-test-reporter@v1
+        with:
+          test-name: Sub-Task 2 - Guess Too Low
+          command: 'python3 -m unittest tests.TestDay2Subtasks.test_guessing_game_too_low'
+          points: 10
+
+      - name: Sub-Task 2 - Guess Too High
+        id: test-guessing-game-too-high
+        uses: education/autograding-test-reporter@v1
+        with:
+          test-name: Sub-Task 2 - Guess Too High
+          command: 'python3 -m unittest tests.TestDay2Subtasks.test_guessing_game_too_high'
+          points: 10
+      
+      - name: Sub-Task 2 - Guess Correctly
+        id: test-guessing-game-correct
+        uses: education/autograding-test-reporter@v1
+        with:
+          test-name: Sub-Task 2 - Guess Correctly
+          command: 'python3 -m unittest tests.TestDay2Subtasks.test_guessing_game_correct'
+          points: 10
+
+      # Homework Tests (50 points)
+      - name: Homework - KM to Miles Conversion
+        id: test-converter-km-to-miles
+        uses: education/autograding-test-reporter@v1
+        with:
+          test-name: Homework - KM to Miles Conversion
+          command: 'python3 -m unittest tests.TestDay2Subtasks.test_converter_km_to_miles'
+          points: 15
+
+      - name: Homework - Celsius to Fahrenheit Conversion
+        id: test-converter-c-to-f
+        uses: education/autograding-test-reporter@v1
+        with:
+          test-name: Homework - Celsius to Fahrenheit Conversion
+          command: 'python3 -m unittest tests.TestDay2Subtasks.test_converter_c_to_f'
+          points: 15
+
+      - name: Homework - Invalid Choice Handling
+        id: test-converter-invalid-choice
+        uses: education/autograding-test-reporter@v1
+        with:
+          test-name: Homework - Invalid Choice Handling
+          command: 'python3 -m unittest tests.TestDay2Subtasks.test_converter_invalid_choice'
+          points: 10
+
+      - name: Homework - Quit Option
+        id: test-converter-quit
+        uses: education/autograding-test-reporter@v1
+        with:
+          test-name: Homework - Quit Option
+          command: 'python3 -m unittest tests.TestDay2Subtasks.test_converter_quit'
+          points: 10
+
+      # Final Reporter
+      - name: Autograding Reporter
+        uses: education/autograding-grader-results@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
